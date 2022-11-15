@@ -55,6 +55,7 @@
           </div>
 
           <!-- table -->
+          <!-- table -->
           <b-table
             striped
             bordered
@@ -64,6 +65,12 @@
             show-empty
           >
             <template v-slot:cell(actions)="row">
+              <b-button
+                :to="{ name: 'admin-tag-edit-id', params: { id: row.item.id } }"
+                variant="warning"
+                size="sm"
+                >EDIT</b-button
+              >
               <b-button
                 variant="danger"
                 size="sm"
@@ -97,7 +104,7 @@ export default {
   head() {
     return {
       title:
-        "Tags - SantriKoding.com - Belajar Koding Bahasa Indonesia Terlengkap",
+        "Tags - Kopiitamku.web.id - Belajar Koding Bahasa Indonesia Terlengkap",
     };
   },
 
