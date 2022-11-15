@@ -44,10 +44,12 @@
               <input
                 type="text"
                 class="form-control"
+                v-model="search"
+                @keypress.enter="searchData"
                 placeholder="cari berdasarkan nama tag"
               />
               <div class="input-group-append">
-                <button class="btn btn-info">
+                <button @click="searchData" class="btn btn-info">
                   <i class="fa fa-search"></i>
                   CARI
                 </button>
@@ -67,7 +69,25 @@
             <template v-slot:cell(image)="data">
               <img class="img-fluid" width="50" :src="data.item.image" />
             </template>
+            <template v-slot:cell(actions)="row">
+              <b-button
+                variant="danger"
+                size="sm"
+                @click="deleteCategory(row.item.id)"
+                >DELETE</b-button
+              >
+            </template>
           </b-table>
+
+          <!-- pagination -->
+          <b-pagination
+            v-model="pagination.current_page"
+            :total-rows="pagination.total"
+            :per-page="pagination.per_page"
+            @change="changePage"
+            align="right"
+            class="mt-3"
+          ></b-pagination>
         </div>
       </div>
     </section>
@@ -83,7 +103,7 @@ export default {
   head() {
     return {
       title:
-        "Categories - Kopiitamku.web.id - Belajar Koding Bahasa Indonesia Terlengkap",
+        "Categories - SantriKoding.com - Belajar Koding Bahasa Indonesia Terlengkap",
     };
   },
 
@@ -107,16 +127,87 @@ export default {
           tdClass: "text-center",
         },
       ],
+
+      //state search
+      search: "",
     };
   },
 
-  async asyncData({ $axios }) {
+  //watch query URL
+  watchQuery: ["q", "page"],
+
+  async asyncData({ $axios, query }) {
+    //page
+    let page = query.page ? parseInt(query.page) : "";
+
+    //search
+    let search = query.q ? query.q : "";
+
     //fetching categories
-    const categories = await $axios.$get("/api/admin/categories");
+    const categories = await $axios.$get(
+      `/api/admin/categories?q=${search}&page=${page}`
+    );
 
     return {
       categories: categories.data.data,
+      pagination: categories.data,
     };
+  },
+
+  methods: {
+    //change page pagination
+    changePage(page) {
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          q: this.$route.query.q,
+          page: page,
+        },
+      });
+    },
+
+    //searchData
+    searchData() {
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          q: this.search,
+        },
+      });
+    },
+
+    //deleteCategory method
+    deleteCategory(id) {
+      this.$swal
+        .fire({
+          title: "APAKAH ANDA YAKIN ?",
+          text: "INGIN MENGHAPUS DATA INI !",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "YA, HAPUS!",
+          cancelButtonText: "TIDAK",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            //delete tag from server
+            this.$axios.delete(`/api/admin/categories/${id}`).then(() => {
+              //feresh data
+              this.$nuxt.refresh();
+
+              //alert
+              this.$swal.fire({
+                title: "BERHASIL!",
+                text: "Data Berhasil Dihapus!",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2000,
+              });
+            });
+          }
+        });
+    },
   },
 };
 </script>
