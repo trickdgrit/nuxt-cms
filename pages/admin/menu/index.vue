@@ -99,7 +99,7 @@ export default {
   head() {
     return {
       title:
-        "Menus - SantriKoding.com - Belajar Koding Bahasa Indonesia Terlengkap",
+        "Menus - Kopiitamku.web.id - Belajar Koding Bahasa Indonesia Terlengkap",
     };
   },
 
