@@ -71,6 +71,16 @@
             </template>
             <template v-slot:cell(actions)="row">
               <b-button
+                :to="{
+                  name: 'admin-category-edit-id',
+                  params: { id: row.item.id },
+                }"
+                variant="warning"
+                size="sm"
+              >
+                EDIT
+              </b-button>
+              <b-button
                 variant="danger"
                 size="sm"
                 @click="deleteCategory(row.item.id)"
