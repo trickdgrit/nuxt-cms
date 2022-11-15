@@ -70,6 +70,15 @@
             </template>
             <template v-slot:cell(actions)="row">
               <b-button
+                :to="{
+                  name: 'admin-post-edit-id',
+                  params: { id: row.item.id },
+                }"
+                variant="warning"
+                size="sm"
+                >EDIT</b-button
+              >
+              <b-button
                 variant="danger"
                 size="sm"
                 @click="deletePost(row.item.id)"
@@ -102,7 +111,7 @@ export default {
   head() {
     return {
       title:
-        "Posts - SantriKoding.com - Belajar Koding Bahasa Indonesia Terlengkap",
+        "Posts - Kopiitamku.web.id - Belajar Koding Bahasa Indonesia Terlengkap",
     };
   },
 
