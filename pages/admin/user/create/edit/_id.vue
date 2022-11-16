@@ -8,7 +8,7 @@
       <div class="card card-outline card-info">
         <div class="card-header">
           <h3 class="card-title">
-            <i class="nav-icon fas fa-tags"></i> TAMBAH SLIDER
+            <i class="nav-icon fas fa-users"></i> EDIT USER
           </h3>
           <div class="card-tools">
             <button
@@ -30,23 +30,49 @@
           </div>
         </div>
         <div class="card-body">
-          <form @submit.prevent="storeSlider">
+          <form @submit.prevent="updateUser">
             <div class="form-group">
-              <label>GAMBAR SLIDER</label>
+              <label>NAMA USER</label>
               <input
-                type="file"
-                @change="handleFileChange"
+                type="text"
+                v-model="user.name"
+                placeholder="Masukkan Nama User"
                 class="form-control"
               />
-              <div v-if="validation.image" class="mt-2">
+              <div v-if="validation.name" class="mt-2">
                 <b-alert show variant="danger">{{
-                  validation.image[0]
+                  validation.name[0]
                 }}</b-alert>
               </div>
             </div>
 
+            <div class="form-group">
+              <label>ALAMAT EMAIL</label>
+              <input
+                type="email"
+                v-model="user.email"
+                placeholder="Masukkan Alamat Email"
+                class="form-control"
+              />
+              <div v-if="validation.email" class="mt-2">
+                <b-alert show variant="danger">{{
+                  validation.email[0]
+                }}</b-alert>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>PASSWORD</label>
+              <input
+                type="text"
+                v-model="user.password"
+                placeholder="Masukkan Password"
+                class="form-control"
+              />
+            </div>
+
             <button class="btn btn-info mr-1 btn-submit" type="submit">
-              <i class="fa fa-paper-plane"></i> SIMPAN
+              <i class="fa fa-paper-plane"></i> UPDATE
             </button>
             <button class="btn btn-warning btn-reset" type="reset">
               <i class="fa fa-redo"></i> RESET
@@ -67,59 +93,53 @@ export default {
   head() {
     return {
       title:
-        "Tambah Slider - Kopiitamku.web.id - Belajar Koding Bahasa Indonesia Terlengkap",
+        "Edit User - Kopiitamku.web.id - Belajar Koding Bahasa Indonesia Terlengkap",
     };
   },
 
   data() {
     return {
-      //state slider
-      slider: {
-        image: "",
+      //state user
+      user: {
+        name: "",
+        email: "",
+        password: "",
       },
       //state validation
       validation: [],
     };
   },
 
+  mounted() {
+    //fetching data user by ID
+    this.$axios
+      .get(`/api/admin/users/${this.$route.params.id}`)
+
+      .then((response) => {
+        //assing response data to state "user.name"
+        this.user.name = response.data.data.name;
+
+        //assing response data to state "user.email"
+        this.user.email = response.data.data.email;
+      });
+  },
+
   methods: {
-    handleFileChange(e) {
-      //get image
-      let image = (this.slider.image = e.target.files[0]);
-
-      //check fileType
-      if (!image.type.match("image.*")) {
-        //if fileType not allowed, then clear value and set null
-        e.target.value = "";
-
-        this.slider.image = null;
-
-        //show sweet alert
-        this.$swal.fire({
-          title: "OOPS!",
-          text: "Format File Tidak Didukung!",
-          icon: "error",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      }
-    },
-
-    //storeSlider method
-    async storeSlider() {
-      //define formData
-      let formData = new FormData();
-
-      formData.append("image", this.slider.image);
-
+    //updateUser method
+    async updateUser() {
       //sending data to server
       await this.$axios
-        .post("/api/admin/sliders", formData)
+        .put(`/api/admin/users/${this.$route.params.id}`, {
+          //data
+          name: this.user.name,
+          email: this.user.email,
+          password: this.user.password,
+        })
         .then(() => {
           //sweet alert
           this.$swal.fire({
             title: "BERHASIL!",
-            text: "Data Berhasil Disimpan!",
+            text: "Data Berhasil Diupdate!",
             icon: "success",
             showConfirmButton: false,
             timer: 2000,
@@ -127,7 +147,7 @@ export default {
 
           //redirect, if success store data
           this.$router.push({
-            name: "admin-slider",
+            name: "admin-user",
           });
         })
         .catch((error) => {
