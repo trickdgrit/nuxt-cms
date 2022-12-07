@@ -175,7 +175,8 @@ export default {
       editorConfig: {
         removePlugins: ["Title"],
         simpleUpload: {
-          uploadUrl: "http://localhost:8000/api/web/posts/storeImage",
+          uploadUrl:
+            "https://timurcms.kopiitamku.web.id/api/web/posts/storeImage",
         },
       },
     };
