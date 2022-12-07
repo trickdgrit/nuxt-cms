@@ -133,7 +133,7 @@ export default {
   head() {
     return {
       title:
-        "Edit Post - SantriKoding.com - Belajar Koding Bahasa Indonesia Terlengkap",
+        "Edit Post - Kopiitamku.web.id - Belajar Koding Bahasa Indonesia Terlengkap",
     };
   },
 
@@ -170,8 +170,12 @@ export default {
       editorConfig: {
         removePlugins: ["Title"],
         simpleUpload: {
+<<<<<<< HEAD
           uploadUrl:
             "https://timurcms.kopiitamku.web.id/api/web/posts/storeImage",
+=======
+          uploadUrl: "https://kopiitam-cms.kopiitamku.web.id/api/web/posts/storeImage",
+>>>>>>> 5c6d89045427ce0f23fbaa96e159b0764ffc10cb
         },
       },
     };
