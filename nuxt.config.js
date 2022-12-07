@@ -114,11 +114,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-<<<<<<< HEAD
     baseURL: "https://timurcms.kopiitamkuweb.id",
-=======
-    baseURL: "https://timurcms.kopiitamku.web.id",
->>>>>>> 5c6d89045427ce0f23fbaa96e159b0764ffc10cb
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
