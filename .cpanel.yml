@@ -1,4 +1,4 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/n1473180/public_html/timurcms
+    - export DEPLOYPATH=/home/n1473180/public_html/timurcms/public
     - /bin/cp index.html $DEPLOYPATH
